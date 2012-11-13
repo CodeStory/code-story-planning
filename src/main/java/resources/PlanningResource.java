@@ -29,7 +29,7 @@ public class PlanningResource extends AbstractResource {
 
   @GET
   public Response redirectToIndex() {
-    return seeOther("index.html");
+    return seeOther("planning.html");
   }
 
   @POST

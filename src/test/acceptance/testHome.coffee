@@ -17,7 +17,7 @@ describe 'Planning', ->
   it 'should show the title', (done) ->
     browser = newBrowser()
     browser.visit home, ->
-      browser.text('title').should.equal 'Devoxx Fight by CodeStory'
+      browser.text('title').should.equal 'CodeStory - Devoxx Planning'
       done()
 
   it 'should show toc', (done) ->
