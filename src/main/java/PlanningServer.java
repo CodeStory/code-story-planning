@@ -5,11 +5,8 @@ import com.sun.jersey.api.container.filter.GZIPContentEncodingFilter;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.jersey.api.core.DefaultResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
-import com.sun.jersey.core.spi.component.ioc.IoCComponentProviderFactory;
-import com.sun.jersey.guice.spi.container.GuiceComponentProviderFactory;
 import com.sun.net.httpserver.HttpServer;
 import resources.AuthenticationResource;
-import resources.FakeAuthenticatorResource;
 import resources.PlanningResource;
 import resources.StaticResource;
 
@@ -41,11 +38,7 @@ public class PlanningServer {
   public void start(int port) throws IOException {
     System.out.println("Starting server on port: " + port);
 
-    ResourceConfig config = configuration();
-    Injector injector = injector();
-    IoCComponentProviderFactory ioc = new GuiceComponentProviderFactory(config, injector);
-
-    server = HttpServerFactory.create(format("http://localhost:%d/", port), config, ioc);
+    server = HttpServerFactory.create(format("http://localhost:%d/", port), configuration());
     server.start();
   }
 
@@ -54,11 +47,12 @@ public class PlanningServer {
   }
 
   private ResourceConfig configuration() {
-    DefaultResourceConfig config = new DefaultResourceConfig(
-        AuthenticationResource.class,
-        FakeAuthenticatorResource.class,
-        StaticResource.class,
-        PlanningResource.class);
+    Injector injector = injector();
+
+    DefaultResourceConfig config = new DefaultResourceConfig();
+    config.getSingletons().add(injector.getInstance(AuthenticationResource.class));
+    config.getSingletons().add(injector.getInstance(StaticResource.class));
+    config.getSingletons().add(injector.getInstance(PlanningResource.class));
 
     config.getProperties().put(PROPERTY_CONTAINER_REQUEST_FILTERS, GZIPContentEncodingFilter.class);
     config.getProperties().put(PROPERTY_CONTAINER_RESPONSE_FILTERS, GZIPContentEncodingFilter.class);
