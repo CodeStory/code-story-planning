@@ -9,7 +9,6 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
@@ -28,8 +27,9 @@ public class PlanningResource extends AbstractResource {
   }
 
   @GET
-  public Response redirectToIndex() {
-    return seeOther("planning.html");
+  @Produces("text/html;charset=UTF-8")
+  public Response index() {
+    return okTemplatize(file("planning.html"));
   }
 
   @POST
@@ -48,7 +48,7 @@ public class PlanningResource extends AbstractResource {
   @Path("planning.json")
   @Produces("application/javascript;charset=UTF-8")
   public String planning(@QueryParam("callback") String callback) {
-    return jsonp(read("planning.json"), callback); // TODO add small cache duration
+    return jsonp(read("planning.json"), callback); // TODO add small cache duration or an etag
   }
 
   @GET
@@ -63,13 +63,6 @@ public class PlanningResource extends AbstractResource {
   @Produces("application/javascript;charset=UTF-8")
   public String starsPerTalk(@QueryParam("callback") String callback) {
     return jsonp(planning.countPerTalk(), callback);
-  }
-
-  @GET
-  @Path("{path : .*\\.html}")
-  @Produces("text/html;charset=UTF-8")
-  public Response html(@PathParam("path") String path) {
-    return ok(templatize(read(path)));
   }
 
   private static String assertAuthenticated(String userId) {

@@ -51,7 +51,7 @@ public class AuthenticationResourceTest {
 
     Response response = resource.authenticated("oauthToken", "oauthVerifier");
 
-    Map<String, List<Object>> metadata = assertRedirected(response, "planning.html");
+    Map<String, List<Object>> metadata = assertRedirected(response, "/");
     List<Object> cookies = metadata.get("Set-Cookie");
     assertThat(cookies).hasSize(2);
     Cookie userIdCookie = (Cookie) cookies.get(0);

@@ -45,9 +45,9 @@ public class AuthenticationResource extends AbstractResource {
         new NewCookie("screenName", user.getScreenName(), "/", null, null, MAX_AGE, false))
         .build();
     } catch (IllegalStateException e) {
-      return seeOther("index.html");
+      return seeOther("/");
     } catch (AuthenticationException e) {
-      return seeOther("index.html");
+      return seeOther("/");
     }
   }
 
@@ -68,6 +68,6 @@ public class AuthenticationResource extends AbstractResource {
   }
 
   private static Response.ResponseBuilder redirectToPlanning() {
-    return Response.seeOther(URI.create("planning.html"));
+    return Response.seeOther(URI.create("/"));
   }
 }
