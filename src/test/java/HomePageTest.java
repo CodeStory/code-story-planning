@@ -27,26 +27,28 @@ public class HomePageTest extends AbstractPageTest {
   }
 
   @Test
+  public void should_show_no_star_if_not_logged_in() {
+    goTo("/");
+
+    assertThat(find("#talk-1253 .star")).isNotEmpty();
+    assertThat(find("#talk-1242 .star")).isNotEmpty();
+    assertThat(find("#talk-1253 .starred")).isEmpty();
+    assertThat(find("#talk-1242 .starred")).isEmpty();
+  }
+
+  @Test
   public void should_redirect_to_authenticate_when_user_stars() {
     goTo("/");
+
+    assertThat(text("#auth a")).contains("Se connecter");
+    assertThat(text("#screenName")).isEmpty();
+    assertThat(getCookie("userId")).isNull();
+    assertThat(getCookie("screenName")).isNull();
 
     click("#talk-1253 .star");
 
     assertThat(text("#auth a")).contains("Déconnexion");
     assertThat(url()).endsWith("/");
-  }
-
-  @Test
-  public void should_show_no_star_if_not_logged_in() {
-    goTo("/");
-
-    assertThat(text("#auth a")).contains("Se connecter");
-    assertThat(getCookie("userId")).isNull();
-    assertThat(getCookie("screenName")).isNull();
-    assertThat(find("#talk-1253 .star")).isNotEmpty();
-    assertThat(find("#talk-1242 .star")).isNotEmpty();
-    assertThat(find("#talk-1253 .starred")).isEmpty();
-    assertThat(find("#talk-1242 .starred")).isEmpty();
   }
 
   @Test
@@ -68,8 +70,10 @@ public class HomePageTest extends AbstractPageTest {
     click("#login");
     click("#logout");
 
-    assertThat(getCookie("userId")).isNull();
     assertThat(text("#auth a")).contains("Se connecter");
+    assertThat(text("#screenName")).isEmpty();
+    assertThat(getCookie("userId")).isNull();
+    assertThat(text("#screenName")).isNull();
   }
 
   @Test
