@@ -73,7 +73,7 @@ public class ServiceRule<T> extends ExternalResource {
 
   private T createService() throws Exception {
     try {
-      return serviceClass.getDeclaredConstructor(Module[].class).newInstance(new Object[] {modules});
+      return serviceClass.getDeclaredConstructor(Module[].class).newInstance(new Object[]{modules});
     } catch (Exception e) {
       return serviceClass.getDeclaredConstructor().newInstance();
     }

@@ -1,17 +1,13 @@
 var dayLabels = {
-  '2012-11-12':'Monday, Nov. 12 2012',
-  '2012-11-13':'Tuesday, Nov. 13 2012',
-  '2012-11-14':'Wednesday, Nov. 14 2012',
-  '2012-11-15':'Thursday, Nov. 15 2012',
-  '2012-11-16':'Friday, Nov. 16 2012'
+  '2013-03-27': 'Mercredi 27 mars 2013',
+  '2013-03-28': 'Jeudi 28 mars 2013',
+  '2013-03-29': 'Vendredi 29 mars 2013'
 };
 
 var dayNames = {
-  '2012-11-12':'Monday',
-  '2012-11-13':'Tuesday',
-  '2012-11-14':'Wednesday',
-  '2012-11-15':'Thursday',
-  '2012-11-16':'Friday'
+  '2013-03-27': 'Mercredi',
+  '2013-03-28': 'Jeudi',
+  '2013-03-29': 'Vendredi'
 };
 
 function set_content(selector, template, data) {
@@ -21,7 +17,7 @@ function set_content(selector, template, data) {
 function initAuthenticationState() {
   var authenticated = ($.cookie('userId') != null);
   var headerTemplateParameters = {
-    'authenticated':authenticated
+    'authenticated': authenticated
   };
   if (authenticated) {
     headerTemplateParameters.screenName = $.cookie('screenName');
@@ -50,7 +46,7 @@ function enrichPlanning(planning) {
     day.dayName = dayNames[day.day];
 
     _.each(day.slots, function (slot) {
-      slot.slot_slug = slot.slot.replace(':','');
+      slot.slot_slug = slot.slot.replace(':', '');
       _.each(slot.talks, function (talk) {
         talk.speakers_string = talk.speakers.join(', ');
       });
@@ -71,9 +67,9 @@ function listenStarClicks() {
     var talkId = $(this).attr('data-talk');
 
     if ($(this).hasClass('starred')) {
-      $.post('unstar', { talkId:talkId }, refreshStars).error(redirectToAuthentication);
+      $.post('unstar', { talkId: talkId }, refreshStars).error(redirectToAuthentication);
     } else {
-      $.post('star', { talkId:talkId }, refreshStars).error(redirectToAuthentication);
+      $.post('star', { talkId: talkId }, refreshStars).error(redirectToAuthentication);
     }
 
     return false;
@@ -119,14 +115,6 @@ function filterTalks() {
 
 function supports_history_api() {
   return !!(window.history && history.pushState);
-}
-
-function supports_html5_storage() {
-  try {
-    return 'localStorage' in window && window['localStorage'] !== null;
-  } catch (e) {
-    return false;
-  }
 }
 
 function updateUrlWithSearchQuery() {
@@ -184,7 +172,7 @@ function ignoreEnterKey() {
 }
 
 function listenGoto() {
-  $(document).on('click', 'a[href^="#"]', function() {
+  $(document).on('click', 'a[href^="#"]', function () {
     console.log(this.hash);
     $.scrollTo(this.hash, 500, {});
     return false;

@@ -12,7 +12,11 @@ retrieve = (url) ->
   http.get url, (response) ->
     scheduleData = ""
     response.on 'data', (data) -> scheduleData += data
-    response.on 'end', () -> promise.resolve JSON.parse(scheduleData)
+    response.on 'end', () ->
+      try
+        promise.resolve JSON.parse(scheduleData)
+      catch e
+        promise.resolve {}
   promise
 
 transformTalks = (data) ->
@@ -45,7 +49,7 @@ transformTalks = (data) ->
     ).value()
   ).value()
 
-retrieve('http://cfp.devoxx.com/rest/v1/events/7/schedule').then (talks) ->
+retrieve('http://cfp.devoxx.com/rest/v1/events/8/schedule').then (talks) ->
   schedule = {days: transformTalks(talks)}
   all(promises).then () ->
     #console.log JSON.stringify(schedule, null, " ")

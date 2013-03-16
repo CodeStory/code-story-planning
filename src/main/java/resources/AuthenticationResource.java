@@ -41,9 +41,9 @@ public class AuthenticationResource extends AbstractResource {
       User user = authenticator.authenticate(token, verifier);
 
       return redirectToPlanning().cookie(
-          new NewCookie("userId", user.getId().toString(), "/", null, null, MAX_AGE, false),
-          new NewCookie("screenName", user.getScreenName(), "/", null, null, MAX_AGE, false))
-          .build();
+        new NewCookie("userId", user.getId().toString(), "/", null, null, MAX_AGE, false),
+        new NewCookie("screenName", user.getScreenName(), "/", null, null, MAX_AGE, false))
+        .build();
     } catch (IllegalStateException e) {
       return seeOther("index.html");
     } catch (AuthenticationException e) {
@@ -55,9 +55,9 @@ public class AuthenticationResource extends AbstractResource {
   @Path("logout")
   public Response logout(@CookieParam("userId") String userId) {
     return redirectToPlanning().cookie(
-        new NewCookie("userId", null, "/", null, null, 0, false),
-        new NewCookie("screenName", null, "/", null, null, 0, false))
-        .build();
+      new NewCookie("userId", null, "/", null, null, 0, false),
+      new NewCookie("screenName", null, "/", null, null, 0, false))
+      .build();
   }
 
   private static Response.ResponseBuilder redirectToPlanning() {
