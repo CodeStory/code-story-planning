@@ -73,7 +73,7 @@ public class HomePageTest extends AbstractPageTest {
     assertThat(text("#auth a")).contains("Se connecter");
     assertThat(text("#screenName")).isEmpty();
     assertThat(getCookie("userId")).isNull();
-    assertThat(text("#screenName")).isNull();
+    assertThat(getCookie("#screenName")).isNull();
   }
 
   @Test

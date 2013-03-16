@@ -34,8 +34,7 @@ public class StaticResource extends AbstractResource {
   public Response cssOrLess(@PathParam("path") String path) throws IOException, LessException {
     // Css
     if (exists(path + ".css")) {
-      File css = file(path + ".css");
-      return okTemplatize(css);
+      return okTemplatize(file(path + ".css"));
     }
 
     // Less
@@ -49,7 +48,7 @@ public class StaticResource extends AbstractResource {
   @GET
   @Path("{path : .*}.js")
   @Produces("application/javascript;charset=UTF-8")
-  public Response js(@PathParam("path") String path) throws JCoffeeScriptCompileException {
+  public Response jsOrCoffee(@PathParam("path") String path) throws JCoffeeScriptCompileException {
     // Js
     if (exists(path + ".js")) {
       File js = file(path + ".js");

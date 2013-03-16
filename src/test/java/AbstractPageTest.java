@@ -1,18 +1,13 @@
 import auth.Authenticator;
 import auth.FakeAuthenticator;
-import com.google.common.base.Throwables;
 import com.google.inject.AbstractModule;
-import com.google.inject.name.Names;
+import com.google.inject.util.Modules;
 import misc.PhantomJsTest;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
-
-import static com.google.inject.name.Names.named;
 
 public abstract class AbstractPageTest extends PhantomJsTest {
   private static final int TRY_COUNT = 10;
@@ -34,7 +29,7 @@ public abstract class AbstractPageTest extends PhantomJsTest {
     for (int i = 0; i < TRY_COUNT; i++) {
       try {
         port = randomPort();
-        server = new PlanningServer(testConfiguration());
+        server = new PlanningServer(Modules.override(new PlanningServerModule(temporaryFolder.getRoot())).with(testConfiguration()));
         server.start(port);
         return;
       } catch (Exception e) {
@@ -48,16 +43,7 @@ public abstract class AbstractPageTest extends PhantomJsTest {
     return new AbstractModule() {
       @Override
       protected void configure() {
-        File root;
-        try {
-          root = temporaryFolder.newFolder();
-        } catch (IOException e) {
-          throw Throwables.propagate(e);
-        }
-
-        bindConstant().annotatedWith(Names.named("port")).to(port);
         bind(Authenticator.class).to(FakeAuthenticator.class);
-        bind(File.class).annotatedWith(named("planning.root")).toInstance(root);
       }
     };
   }

@@ -10,29 +10,28 @@ import resources.AuthenticationResource;
 import resources.PlanningResource;
 import resources.StaticResource;
 
+import java.io.File;
 import java.io.IOException;
 
 import static com.google.common.base.Objects.firstNonNull;
-import static com.google.inject.util.Modules.override;
 import static com.sun.jersey.api.core.ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS;
 import static com.sun.jersey.api.core.ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 
 public class PlanningServer {
-  public static final String DEFAULT_PORT = "8080";
-
-  private final Module[] modules;
+  private final Injector injector;
   private HttpServer server;
 
-  public PlanningServer(Module... modules) {
-    this.modules = modules;
+  public PlanningServer(Module module) {
+    this.injector = Guice.createInjector(module);
   }
 
   public static void main(String[] args) throws IOException {
-    int port = parseInt(firstNonNull(System.getenv("PORT"), DEFAULT_PORT));
+    int port = parseInt(firstNonNull(System.getenv("PORT"), "8080"));
+    String workingDir = firstNonNull(System.getenv("PLANNING_ROOT"), "data");
 
-    new PlanningServer().start(port);
+    new PlanningServer(new PlanningServerModule(new File(workingDir))).start(port);
   }
 
   public void start(int port) throws IOException {
@@ -43,8 +42,6 @@ public class PlanningServer {
   }
 
   private ResourceConfig configuration() {
-    Injector injector = injector();
-
     DefaultResourceConfig config = new DefaultResourceConfig();
     config.getSingletons().add(injector.getInstance(AuthenticationResource.class));
     config.getSingletons().add(injector.getInstance(StaticResource.class));
@@ -54,9 +51,5 @@ public class PlanningServer {
     config.getProperties().put(PROPERTY_CONTAINER_RESPONSE_FILTERS, GZIPContentEncodingFilter.class);
 
     return config;
-  }
-
-  private Injector injector() {
-    return Guice.createInjector(override(new PlanningServerModule()).with(modules));
   }
 }

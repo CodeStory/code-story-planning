@@ -1,6 +1,5 @@
 package resources;
 
-import auth.AuthenticationException;
 import auth.Authenticator;
 import auth.User;
 import com.google.inject.Inject;
@@ -44,10 +43,8 @@ public class AuthenticationResource extends AbstractResource {
         new NewCookie("userId", user.getId().toString(), "/", null, null, MAX_AGE, false),
         new NewCookie("screenName", user.getScreenName(), "/", null, null, MAX_AGE, false))
         .build();
-    } catch (IllegalStateException e) {
-      return seeOther("/");
-    } catch (AuthenticationException e) {
-      return seeOther("/");
+    } catch (Exception e) {
+      return redirectToPlanning().build();
     }
   }
 

@@ -52,14 +52,6 @@ abstract class AbstractResource {
     return json;
   }
 
-  protected Response concat(String... paths) {
-    StringBuilder body = new StringBuilder();
-    for (String path : paths) {
-      body.append(read(path));
-    }
-    return ok(body.toString(), file(paths[paths.length - 1]).lastModified());
-  }
-
   protected String templatize(File file, Map<?, ?> variables) {
     ContentWithVariables yaml = new YamlFrontMatter().parse(read(file));
 

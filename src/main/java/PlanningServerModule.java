@@ -12,6 +12,12 @@ import java.io.File;
 import static com.google.inject.name.Names.named;
 
 public class PlanningServerModule extends AbstractModule {
+  private final File workingDir;
+
+  public PlanningServerModule(File workingDir) {
+    this.workingDir = workingDir;
+  }
+
   @Override
   protected void configure() {
     bindConstant().annotatedWith(named("oAuth.callback")).to(env("OAUTH_CALLBACK", ""));
@@ -23,12 +29,12 @@ public class PlanningServerModule extends AbstractModule {
   }
 
   @Provides
-  private Configuration createConfiguration(@Named("oAuth.key") String key, @Named("oAuth.secret") String secret) {
+  public Configuration createConfiguration(@Named("oAuth.key") String key, @Named("oAuth.secret") String secret) {
     return new ConfigurationBuilder().setOAuthConsumerKey(key).setOAuthConsumerSecret(secret).build();
   }
 
   @Provides
-  private TwitterFactory createTwitterFactory(Configuration config) {
+  public TwitterFactory createTwitterFactory(Configuration config) {
     return new TwitterFactory(config);
   }
 
