@@ -37,17 +37,15 @@ public class HomePageTest extends AbstractPageTest {
   }
 
   @Test
-  public void should_show_no_star_id_not_logged_in() {
+  public void should_show_no_star_if_not_logged_in() {
     goTo("/");
 
     assertThat(text("#auth a")).contains("Se connecter");
     assertThat(getCookie("userId")).isNull();
     assertThat(getCookie("screenName")).isNull();
     assertThat(find("#talk-1253 .star")).isNotEmpty();
-    assertThat(find("#talk-1241 .star")).isNotEmpty();
     assertThat(find("#talk-1242 .star")).isNotEmpty();
     assertThat(find("#talk-1253 .starred")).isEmpty();
-    assertThat(find("#talk-1241 .starred")).isEmpty();
     assertThat(find("#talk-1242 .starred")).isEmpty();
   }
 
