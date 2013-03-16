@@ -1,29 +1,31 @@
 package templating;
 
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
 import com.google.common.base.Charsets;
+import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
-import org.stringtemplate.v4.ST;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Map;
 
 public class Template {
-  public String apply(String content, Map<String, String> variables) {
-    return createTemplate(content, variables).render();
-  }
+  private final DefaultMustacheFactory mustacheFactory = new DefaultMustacheFactory();
 
-  private ST createTemplate(String content, Map<String, String> variables) {
-    ST template = new ST(content, '$', '$');
+  public String apply(String content, Map<?, ?> variables) {
+    Mustache mustache = mustacheFactory.compile(new StringReader(content), content, "[[", "]]");
 
-    if (null != variables) {
-      for (Map.Entry<String, String> variable : variables.entrySet()) {
-        template.add(variable.getKey(), variable.getValue());
-      }
+    Map<?, ?> additional = ImmutableMap.of("body", "[[body]]", "version", readGitHash());
+    try {
+      StringWriter output = new StringWriter();
+      mustache.execute(output, new Object[]{variables, additional}).flush();
+      return output.toString();
+    } catch (IOException e) {
+      throw Throwables.propagate(e);
     }
-    template.add("body", "$body$");
-    template.add("version", readGitHash());
-
-    return template;
   }
 
   private static String readGitHash() {

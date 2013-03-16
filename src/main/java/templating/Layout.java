@@ -8,6 +8,6 @@ public class Layout {
   }
 
   public String apply(String body) {
-    return layout.replace("$body$", body);
+    return layout.replace("[[body]]", body);
   }
 }
