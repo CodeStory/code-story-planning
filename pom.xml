@@ -46,9 +46,21 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>net.gageot</groupId>
-      <artifactId>testexpert</artifactId>
-      <version>1.0.4</version>
+      <groupId>org.fluentlenium</groupId>
+      <artifactId>fluentlenium-core</artifactId>
+      <version>0.7.5</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.github.detro.ghostdriver</groupId>
+      <artifactId>phantomjsdriver</artifactId>
+      <version>1.0.3-dev</version>
       <scope>test</scope>
     </dependency>
     <dependency>

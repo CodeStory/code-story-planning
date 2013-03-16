@@ -60,6 +60,13 @@ public class AuthenticationResource extends AbstractResource {
       .build();
   }
 
+  // For tests
+  @GET
+  @Path("fakeauthenticate")
+  public Response fakeauthenticate() {
+    return seeOther("/user/authenticated?oauthToken=foo&oauthVerifier=bar");
+  }
+
   private static Response.ResponseBuilder redirectToPlanning() {
     return Response.seeOther(URI.create("planning.html"));
   }

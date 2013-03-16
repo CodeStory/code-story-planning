@@ -17,7 +17,7 @@ public class FakeAuthenticator implements Authenticator {
 
   @Override
   public URI getAuthenticateURI() {
-    return URI.create(format("http://localhost:%d/fakeauthenticate", port));
+    return URI.create(format("http://localhost:%d/user/fakeauthenticate", port));
   }
 
   @Override

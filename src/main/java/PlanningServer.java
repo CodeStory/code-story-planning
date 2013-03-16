@@ -42,10 +42,6 @@ public class PlanningServer {
     server.start();
   }
 
-  public void stop() {
-    server.stop(0);
-  }
-
   private ResourceConfig configuration() {
     Injector injector = injector();
 
