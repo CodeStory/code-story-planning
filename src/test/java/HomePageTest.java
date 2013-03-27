@@ -21,9 +21,9 @@ public class HomePageTest extends AbstractPageTest {
   public void should_display_sessions() {
     goTo("/");
 
-    assertThat(text("#talk-1253 h2")).contains("CodeStory 2013 (Conference)");
-    assertThat(text("#talk-1253 .speaker")).contains("David Gageot, Jean-laurent De morlhon @Auditorium Vendredi de 17:00 à 17:50");
-    assertThat(text("#talk-1253 p")).contains("CodeStory 2013)");
+    assertThat(text("#talk-1253 h2")).contains("Android Bad Practices : comment foirer son app (Conference)");
+    assertThat(text("#talk-1253 .speaker")).contains("Pierre-yves Ricau @Auditorium Vendredi de 17:00 à 17:50");
+    assertThat(text("#talk-1253 p")).contains("Comment écrire du code incompréhensible ? Comment garantir l'incompatibilité avec les différentes versions d'Android ? Comment faire planter une appli en cas de rotation, d'interaction avec la backstack ou de retour à la Home ? Comment construire un build non reproductible ? Venez découvrir de nombreuses erreurs, comment les expliquer et comment les éviter à l'avenir. Nous couvrirons des problématiques allant du build à l'archi, avec au milieu beaucoup de code. J'en profiterais pour vous présenter la stack technique de Square.)");
   }
 
   @Test
